@@ -17,7 +17,7 @@ App publishers and product managers invest in pricing, update cadence, content r
 - **Source:** Google Play Store public web pages
 - **Method:** Web-scraped using the `google-play-scraper` Python library — no API key or login required
 - **Scale:** 10,000+ unique apps across 48 Google Play categories
-- **Fields collected:** app_id, title, category, price, is_free, has_in_app_purchases, content_rating, size_mb, install_count, average_rating, num_ratings, developer_name, last_updated_date
+- **Fields collected:** app_id, title, category, price, is_free, has_in_app_purchases, contains_ads, content_rating, size_mb, install_count, real_installs, average_rating, num_ratings, num_reviews, ratings_1_star, ratings_2_star, ratings_3_star, ratings_4_star, ratings_5_star, developer_name, released_date, last_updated_date
 - **Privacy:** `developer_email` and `developer_website` are excluded at collection time (PII for indie developers)
 
 ## Methods Used
