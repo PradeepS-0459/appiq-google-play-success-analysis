@@ -53,10 +53,4 @@ python collect_data.py
 jupyter notebook analysis.ipynb
 ```
 
-## Key Results
 
-*Results will be populated after the analysis is complete.*
-
-## References
-
-*References will be added after the state-of-the-art comparison is complete.*
