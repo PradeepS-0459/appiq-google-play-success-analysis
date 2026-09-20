@@ -64,12 +64,21 @@ OUTPUT_COLUMNS = [
     "price",
     "is_free",
     "has_in_app_purchases",
+    "contains_ads",
     "content_rating",
     "size_mb",
     "install_count",
+    "real_installs",
     "average_rating",
     "num_ratings",
+    "num_reviews",
+    "ratings_1",
+    "ratings_2",
+    "ratings_3",
+    "ratings_4",
+    "ratings_5",
     "developer_name",
+    "released_date",
     "last_updated_date",
 ]
 
@@ -239,6 +248,15 @@ def _extract_row(detail: dict, category_slug: str) -> dict | None:
     # In-app purchases detection
     has_iap = detail.get("offersIAP", False) or bool(detail.get("inAppProductPrice"))
 
+    # Ads detection
+    contains_ads = detail.get("containsAds", False) or detail.get("adSupported", False)
+
+    # Released date (original launch date)
+    raw_released = detail.get("released", "")
+    released_date = raw_released if isinstance(raw_released, str) else ""
+
+    histogram = detail.get("histogram") or [0, 0, 0, 0, 0]
+
     row = {
         "app_id":                app_id,
         "title":                 detail.get("title", ""),
@@ -246,12 +264,21 @@ def _extract_row(detail: dict, category_slug: str) -> dict | None:
         "price":                 detail.get("price", 0),
         "is_free":               detail.get("free", True),
         "has_in_app_purchases":  has_iap,
+        "contains_ads":          contains_ads,
         "content_rating":        detail.get("contentRating", ""),
         "size_mb":               _parse_size(detail.get("size", "")),
         "install_count":         raw_installs,
+        "real_installs":         detail.get("realInstalls", None),
         "average_rating":        detail.get("score"),
         "num_ratings":           detail.get("ratings"),
+        "num_reviews":           detail.get("reviews"),
+        "ratings_1":             histogram[0] if len(histogram) == 5 else 0,
+        "ratings_2":             histogram[1] if len(histogram) == 5 else 0,
+        "ratings_3":             histogram[2] if len(histogram) == 5 else 0,
+        "ratings_4":             histogram[3] if len(histogram) == 5 else 0,
+        "ratings_5":             histogram[4] if len(histogram) == 5 else 0,
         "developer_name":        detail.get("developer", ""),
+        "released_date":         released_date,
         "last_updated_date":     last_updated,
     }
     return row
