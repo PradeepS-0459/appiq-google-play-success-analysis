@@ -66,6 +66,7 @@ OUTPUT_COLUMNS = [
     "has_in_app_purchases",
     "contains_ads",
     "content_rating",
+    "size_available",
     "size_mb",
     "install_count",
     "real_installs",
@@ -257,6 +258,9 @@ def _extract_row(detail: dict, category_slug: str) -> dict | None:
 
     histogram = detail.get("histogram") or [0, 0, 0, 0, 0]
 
+    raw_size = detail.get("size", "")
+    parsed_size = _parse_size(raw_size)
+
     row = {
         "app_id":                app_id,
         "title":                 detail.get("title", ""),
@@ -266,7 +270,8 @@ def _extract_row(detail: dict, category_slug: str) -> dict | None:
         "has_in_app_purchases":  has_iap,
         "contains_ads":          contains_ads,
         "content_rating":        detail.get("contentRating", ""),
-        "size_mb":               _parse_size(detail.get("size", "")),
+        "size_available":        parsed_size is not None,
+        "size_mb":               parsed_size,
         "install_count":         raw_installs,
         "real_installs":         detail.get("realInstalls", None),
         "average_rating":        detail.get("score"),
